@@ -19,7 +19,12 @@ class Mercury::TurnQueue
 				return -1 if self.round_number > other.round_number
 				return 1
 			end
-			return self.member.agility <=> other.member.agility
+
+			unless self.member.agility == other.member.agility
+				return self.member.agility <=> other.member.agility
+			end
+
+			return self.member.stat_total <=> other.member.stat_total
 		end
 	end
 

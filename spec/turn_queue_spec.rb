@@ -2,10 +2,12 @@ require 'spec_helper'
 
 describe Mercury::TurnQueue do
 	class FakeMember
-		attr_reader :agility
+		attr_accessor :agility, :stat_total
 
-		def initialize agility
-			@agility = agility
+		def initialize options = {}
+			required_options = [:agility, :stat_total]
+			options.required *required_options
+			options.internalize self, *required_options
 		end
 	end
 
@@ -15,10 +17,10 @@ describe Mercury::TurnQueue do
 		end
 
 		it 'orders by round number' do
-			@member1 = FakeMember.new 1
-			@member2 = FakeMember.new 1
-			@member3 = FakeMember.new 1
-			@member4 = FakeMember.new 1
+			@member1 = FakeMember.new agility: 1, stat_total: 1
+			@member2 = FakeMember.new agility: 1, stat_total: 1
+			@member3 = FakeMember.new agility: 1, stat_total: 1
+			@member4 = FakeMember.new agility: 1, stat_total: 1
 
 			@queue.add member: @member1, round_number: 1
 			@queue.add member: @member3, round_number: 3
@@ -32,8 +34,8 @@ describe Mercury::TurnQueue do
 		end
 
 		it 'breaks a tie by checking agility' do
-			@member1 = FakeMember.new 5
-			@member2 = FakeMember.new 8
+			@member1 = FakeMember.new agility: 5, stat_total: 1
+			@member2 = FakeMember.new agility: 8, stat_total: 1
 
 			@queue.add member: @member1, round_number: 1
 			@queue.add member: @member2, round_number: 1
@@ -42,7 +44,17 @@ describe Mercury::TurnQueue do
 			expect(@queue.pop).to be @member1
 		end
 
-		it 'breaks an agility tie by checking total stats'
+		it 'breaks an agility tie by checking total stats' do
+			@member1 = FakeMember.new agility: 5, stat_total: 10
+			@member2 = FakeMember.new agility: 5, stat_total: 13
+
+			@queue.add member: @member1, round_number: 1
+			@queue.add member: @member2, round_number: 1
+
+			expect(@queue.pop).to be @member2
+			expect(@queue.pop).to be @member1
+		end
+
 		it 'breaks a total stat tie by picking one at random (uniformly)'
 	end
 
