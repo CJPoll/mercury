@@ -12,12 +12,18 @@ describe Mercury::TurnQueue do
 		it 'orders by round number' do
 			@member1 = FakeMember.new
 			@member2 = FakeMember.new
+			@member3 = FakeMember.new
+			@member4 = FakeMember.new
 
 			@queue.add member: @member1, round_number: 1
+			@queue.add member: @member3, round_number: 3
 			@queue.add member: @member2, round_number: 2
+			@queue.add member: @member4, round_number: 4
 
-			expect(@queue.pop).to be @member2
 			expect(@queue.pop).to be @member1
+			expect(@queue.pop).to be @member2
+			expect(@queue.pop).to be @member3
+			expect(@queue.pop).to be @member4
 		end
 
 		it 'breaks a tie by checking agility'

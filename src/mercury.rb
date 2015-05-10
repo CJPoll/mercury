@@ -7,7 +7,7 @@ class Hash
 
 	def internalize obj, *options
 		options.each do |option|
-			obj.send "#{option.to_s}=", options[option]
+			obj.send "#{option.to_s}=", self[option]
 		end
 	end
 end

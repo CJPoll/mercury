@@ -15,7 +15,10 @@ class Mercury::TurnQueue
 		end
 
 		def <=> other
-			return self.round_number <=> other.round_number unless self.round_number == other.round_number
+			unless self.round_number == other.round_number
+				return -1 if self.round_number > other.round_number
+				return 1
+			end
 			return self.member.agility <=> other.member.agility
 		end
 	end
@@ -30,5 +33,9 @@ class Mercury::TurnQueue
 		new_member = TurnQueueMember.new options
 
 		@queue.push new_member
+	end
+
+	def pop
+		@queue.pop.member
 	end
 end
