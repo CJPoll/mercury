@@ -73,7 +73,5 @@ describe Mercury::TurnQueue do
 			expect(@queue.pop).to be @member1
 			expect(@queue.pop).to be @member1
 		end
-
-		it 'allows an element to be inserted multiple times with the same priority'
 	end
 end
