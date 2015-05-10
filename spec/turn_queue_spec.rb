@@ -54,8 +54,6 @@ describe Mercury::TurnQueue do
 			expect(@queue.pop).to be @member2
 			expect(@queue.pop).to be @member1
 		end
-
-		it 'breaks a total stat tie by picking one at random (uniformly)'
 	end
 
 	context 'single insertions' do
