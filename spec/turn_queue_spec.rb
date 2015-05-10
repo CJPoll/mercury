@@ -56,12 +56,24 @@ describe Mercury::TurnQueue do
 		end
 	end
 
-	context 'single insertions' do
-		it 'sorts two elements with different priorities correctly'
-	end
-
 	context 'multiple insertions' do
-		it 'allows an element to be inserted multiple times with different priorities'
+		before :each do
+			@queue = Mercury::TurnQueue.new
+		end
+
+		it 'allows an element to be inserted multiple times with different priorities' do
+			@member1 = FakeMember.new agility: 5, stat_total: 1
+			@member2 = FakeMember.new agility: 8, stat_total: 1
+
+			@queue.add member: @member1, round_number: 1
+			@queue.add member: @member2, round_number: 1
+			@queue.add member: @member1, round_number: 2
+
+			expect(@queue.pop).to be @member2 # higher agility
+			expect(@queue.pop).to be @member1
+			expect(@queue.pop).to be @member1
+		end
+
 		it 'allows an element to be inserted multiple times with the same priority'
 	end
 end
