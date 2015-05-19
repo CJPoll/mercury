@@ -52,11 +52,13 @@ module Mercury::Stats::StatBoostRegistration
   def boost_stat on:, of_type:
     @boosts[on] ||= {percent: {}, points: {}}
 
-    le_boost = @boosts[on][of_type].inject(0) do |sum, (name, modifier)|
+    # Called buff here instead of boost because there's already a method named
+    # boost
+    buff = @boosts[on][of_type].inject(0) do |sum, (name, modifier)|
       sum += modifier.amount
     end
 
-    return le_boost
+    return buff
   end
 
   def remove_boost from:, called:
@@ -65,15 +67,13 @@ module Mercury::Stats::StatBoostRegistration
 
     named_percent_hash.each do |name, modifier|
       if name == called
-        type_hash.delete name
-        return
+        named_percent_hash.delete name
       end
     end
 
     named_points_hash.each do |name, modifier|
       if name == called
         named_points_hash.delete name
-        return
       end
     end
   end

@@ -39,5 +39,15 @@ describe Character do
     expect(@character.power).to eq 13
   end
 
-  it 'can remove a percent-type boost to a stat'
+  it 'can remove a percent-type boost to a stat' do
+    @character.boost :power, by: 10.percent, called: :test_boost
+
+    expect(@character.base_power).to eq 10
+    expect(@character.power).to eq 11
+
+    @character.remove_boost from: :power, called: :test_boost
+
+    expect(@character.base_power).to eq 10
+    expect(@character.power).to eq 10
+  end
 end
