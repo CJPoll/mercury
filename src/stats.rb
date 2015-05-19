@@ -58,9 +58,28 @@ module Mercury::Stats::StatBoostRegistration
 
     return le_boost
   end
+
+  def remove_boost from:, called:
+    named_percent_hash = @boosts[from][:percent]
+    named_points_hash = @boosts[from][:points]
+
+    named_percent_hash.each do |name, modifier|
+      if name == called
+        type_hash.delete name
+        return
+      end
+    end
+
+    named_points_hash.each do |name, modifier|
+      if name == called
+        named_points_hash.delete name
+        return
+      end
+    end
+  end
 end
 
 class Mercury::Stats::CoreStatBlock
-	include Mercury::Stats::BaseStatMethods
-	include Mercury::Stats::StatBoostRegistration
+  include Mercury::Stats::BaseStatMethods
+  include Mercury::Stats::StatBoostRegistration
 end
