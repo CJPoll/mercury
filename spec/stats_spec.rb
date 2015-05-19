@@ -1,12 +1,12 @@
 require 'spec_helper'
 
-TEST_CLASS = Mercury::Stats::CoreStatBlock
-STATS = Mercury::Stats::STATS
 
 describe Mercury::Stats::CoreStatBlock do
+  test_class = Mercury::Stats::CoreStatBlock
+  STATS = Mercury::Stats::STATS
   context '::new' do
     it 'defaults all stats to 0' do
-      stat_block = TEST_CLASS.new
+      stat_block = test_class.new
 
       STATS.each do |stat|
         stat_name = "base_#{stat}"
@@ -18,7 +18,7 @@ describe Mercury::Stats::CoreStatBlock do
 
   context 'effective stats' do
     before :each do
-      @statblock = TEST_CLASS.new(
+      @statblock = test_class.new(
         power: 10,
         fortitude: 11,
         agility: 12,
