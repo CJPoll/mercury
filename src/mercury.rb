@@ -1,16 +1,3 @@
-class Hash
-	def required *options
-		options.each do |option|
-			raise "Missing required option: #{option}" unless self.include? option
-		end
-	end
-
-	def internalize obj, *options
-		options.each do |option|
-			obj.send "#{option.to_s}=", self[option]
-		end
-	end
-end
-
-module Mercury
-end
+require './src/mercury_module'
+require './src/stats'
+require './src/turn_queue'

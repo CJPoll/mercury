@@ -4,10 +4,9 @@ describe Mercury::TurnQueue do
 	class FakeMember
 		attr_accessor :agility, :stat_total
 
-		def initialize options = {}
-			required_options = [:agility, :stat_total]
-			options.required *required_options
-			options.internalize self, *required_options
+		def initialize agility: , stat_total:
+      @agility = agility
+      @stat_total = stat_total
 		end
 	end
 
@@ -72,24 +71,6 @@ describe Mercury::TurnQueue do
 			expect(@queue.pop).to be @member2 # higher agility
 			expect(@queue.pop).to be @member1
 			expect(@queue.pop).to be @member1
-		end
-	end
-
-	context 'missing options' do
-		before :each do
-			@queue = Mercury::TurnQueue.new
-		end
-
-		it 'raises an exception without a round number' do
-			expect {
-				@queue.add member: :unimportant
-			}.to raise_error(Exceptions::MissingOption)
-		end
-
-		it 'raises an exception without a member' do
-			expect {
-				@queue.add round_number: :unimportant
-			}.to raise_error(Exceptions::MissingOption)
 		end
 	end
 

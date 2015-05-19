@@ -1,6 +1,6 @@
 require 'byebug'
-require 'require_all'
 require 'factory_girl'
+require 'require_all'
 
 require './src/mercury'
 

@@ -7,11 +7,9 @@ class Mercury::TurnQueue
 
 		attr_accessor :member, :round_number
 
-		def initialize options = {}
-			required_options = [:member, :round_number]
-
-			options.required *required_options
-			options.internalize self, *required_options
+		def initialize member:, round_number:
+      @member = member
+      @round_number = round_number
 		end
 
 		def <=> other
@@ -32,10 +30,8 @@ class Mercury::TurnQueue
 		@queue = PQueue.new
 	end
 
-	def add options = {}
-		options.required(:member, :round_number)
-
-		new_member = TurnQueueMember.new options
+	def add member:, round_number:
+		new_member = TurnQueueMember.new member: member, round_number: round_number
 
 		@queue.push new_member
 	end
