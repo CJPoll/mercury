@@ -11,6 +11,10 @@ class Integer
   def points
     return Modifier.new(amount: self, type: :points)
   end
+
+  def percent
+    return Modifier.new(amount: self * 0.01, type: :percent)
+  end
 end
 
 class Character
