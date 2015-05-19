@@ -18,17 +18,15 @@ module Mercury::Stats::BaseStatMethods
 		end
 	end
 
+	def initialize stats = {}
+    Mercury::Stats::STATS.each do |stat|
+      instance_variable_set("@base_#{stat.to_s}", stats[stat] || 0)
+    end
+	end
+
 	stats *Mercury::Stats::STATS
 end
 
 class Mercury::Stats::CoreStatBlock
 	include Mercury::Stats::BaseStatMethods
-
-	def initialize power: 0, fortitude: 0, agility: 0, intelligence: 0, soul: 0
-		@base_power = power
-		@base_fortitude = fortitude
-		@base_agility = agility
-		@base_intelligence = intelligence
-		@base_soul = soul
-	end
 end
