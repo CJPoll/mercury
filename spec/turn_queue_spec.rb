@@ -74,4 +74,32 @@ describe Mercury::TurnQueue do
 			expect(@queue.pop).to be @member1
 		end
 	end
+
+	context 'missing options' do
+		before :each do
+			@queue = Mercury::TurnQueue.new
+		end
+
+		it 'raises an exception without a round number' do
+			expect {
+				@queue.add member: :unimportant
+			}.to raise_error(Exceptions::MissingOption)
+		end
+
+		it 'raises an exception without a member' do
+			expect {
+				@queue.add round_number: :unimportant
+			}.to raise_error(Exceptions::MissingOption)
+		end
+	end
+
+	context 'empty' do
+		before :each do
+			@queue = Mercury::TurnQueue.new
+		end
+
+		it 'pops nil if empty' do
+			expect(@queue.pop).to be_nil
+		end
+	end
 end

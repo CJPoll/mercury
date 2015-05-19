@@ -41,6 +41,8 @@ class Mercury::TurnQueue
 	end
 
 	def pop
-		@queue.pop.member
+		queue_member = @queue.pop
+		queue_member = queue_member.member unless queue_member.nil?
+		queue_member
 	end
 end
