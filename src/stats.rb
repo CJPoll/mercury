@@ -32,23 +32,55 @@ module Mercury::Stats::BaseStatMethods
 end
 
 module Mercury::Stats::StatBoostRegistration
+  # Registers a boost (a.k.a. buff) on a single stat.
+  #
+  # It can be a point boost (+10 agility) or it can be a percent boost.
+  #
+  # Percent boosts are based on the stat's base. An example of this is shown
+  # below.
+  #
+  # @parameters:
+  #   stat: A symbol naming the stat to be boosted (example: :intelligence)
+  #
+  # Examples:
+  #   `character.boost :agility, by: 10.percent, called: :test_boost`
+  #     Assuming base agility of 100 and no other buffs, the character's
+  #     effective agility is now 110.
+  #
+  #   `character.boost :soul, by: 20.points, called: :test_boost`
+  #     Assuming base soul of 100 and no other buffs, the character's
+  #     effective soul is now 120.
+  #
+  #   `character.boost :intelligence by 20.percent, called: :some_buff`
+  #   `character.boost :intelligence by 10.percent, called: :another_buff`
+  #     Assuming a base intelligence of 100 and only these two buffs, the
+  #     character's effective intelligence is now 130.
+  #
+  #     This is calculated by combining the percent boosts (20 + 10 = 30 percent)
+  #     and multiplying the result by the base (100 * 30% = 30) and adding it to
+  #     the base (100 + 30 = 130)
   def boost stat, by:, called:
-    @boosts ||= {}
+    @boosts |||= {}
     @boosts[stat] ||= {percent: {}, points: {}}
 
     @boosts[stat][by.type][called] = by
   end
 
+  # Calculates how much of a percentage boost a given stat has. Really just a 
+  # wrapper around boost_stat with a default value for certain situations
   def percentage_boost on:
     return 1 if @boosts.nil? || @boosts[on].nil? || @boosts[on][:percent].empty?
     return (boost_stat on: on, of_type: :percent) + 1
   end
 
+  # Calculates the point bonus to a given stat. Really just a wrapper around
+  # boost_stat with a default value for certain situations
   def point_boost on:
     return 0 if @boosts.nil? || @boosts[on].nil? || @boosts[on][:points].empty?
     return (boost_stat on: on, of_type: :points) + 0
   end
 
+  # Implements calculating the percent or point boost of any given stat.
   def boost_stat on:, of_type:
     @boosts[on] ||= {percent: {}, points: {}}
 
@@ -61,6 +93,7 @@ module Mercury::Stats::StatBoostRegistration
     return buff
   end
 
+  # Removes boosts from a given stat which have a given ID/name
   def remove_boost from:, called:
     named_percent_hash = @boosts[from][:percent]
     named_points_hash = @boosts[from][:points]
