@@ -7,22 +7,22 @@ class Mercury::TurnQueue
 
 		attr_accessor :member, :round_number
 
-		def initialize member:, round_number:
-      @member = member
-      @round_number = round_number
+		def initialize(member:, round_number:)
+			@member = member
+			@round_number = round_number
 		end
 
-		def <=> other
-			unless self.round_number == other.round_number
-				return -1 if self.round_number > other.round_number
+		def <=>(other)
+			unless round_number == other.round_number
+				return -1 if round_number > other.round_number
 				return 1
 			end
 
-			unless self.member.agility == other.member.agility
-				return self.member.agility <=> other.member.agility
+			unless member.agility == other.member.agility
+				return member.agility <=> other.member.agility
 			end
 
-			return self.member.stat_total <=> other.member.stat_total
+			member.stat_total <=> other.member.stat_total
 		end
 	end
 
@@ -30,7 +30,7 @@ class Mercury::TurnQueue
 		@queue = PQueue.new
 	end
 
-	def add member:, round_number:
+	def add(member:, round_number:)
 		new_member = TurnQueueMember.new member: member, round_number: round_number
 
 		@queue.push new_member

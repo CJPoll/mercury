@@ -17,7 +17,18 @@ class Integer
   end
 end
 
-class Character
+module Mercury::Actor::Equips
+	def equip item
+		item.equip self
+	end
+
+	def unequip item
+		item.unequip self
+	end
+end
+
+class Mercury::Actor::Character
 	include Mercury::Stats::BaseStatMethods
 	include Mercury::Stats::StatBoostRegistration
+	include Mercury::Actor::Equips
 end

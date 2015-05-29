@@ -59,11 +59,11 @@ module Mercury::Stats::StatBoostRegistration
   #     This is calculated by combining the percent boosts (20 + 10 = 30 percent)
   #     and multiplying the result by the base (100 * 30% = 30) and adding it to
   #     the base (100 + 30 = 130)
-  def boost stat, by:, called:
-    @boosts |||= {}
+  def boost stat, by:, set_by:
+    @boosts ||= {}
     @boosts[stat] ||= {percent: {}, points: {}}
 
-    @boosts[stat][by.type][called] = by
+    @boosts[stat][by.type][set_by] = by
   end
 
   # Calculates how much of a percentage boost a given stat has. Really just a 
@@ -94,19 +94,19 @@ module Mercury::Stats::StatBoostRegistration
   end
 
   # Removes boosts from a given stat which have a given ID/name
-  def remove_boost from:, called:
+  def remove_boost from:, set_by:
     named_percent_hash = @boosts[from][:percent]
     named_points_hash = @boosts[from][:points]
 
     named_percent_hash.each do |name, modifier|
-      if name == called
+      if name == set_by
         named_percent_hash.delete name
       end
     end
 
-    named_points_hash.each do |name, modifier|
-      if name == called
-        named_points_hash.delete name
+    named_points_hash.each do |key, modifier|
+      if key == set_by
+        named_points_hash.delete key
       end
     end
   end

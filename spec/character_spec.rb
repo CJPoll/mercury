@@ -1,28 +1,27 @@
 require './spec/spec_helper'
 
-describe Character do
-  TEST_CLASS = Character
+describe Mercury::Actor::Character do
   before :each do
-    @character = TEST_CLASS.new power: 10
+    @character = Mercury::Actor::Character.new power: 10
   end
 
   it 'allows a point boost to a stat' do
     expect(@character.base_power).to eq 10
     expect(@character.power).to eq 10
 
-    @character.boost :power, by: 10.points, called: :test_boost
+    @character.boost :power, by: 10.points, set_by: self
 
     expect(@character.base_power).to eq 10
     expect(@character.power).to eq 20
   end
 
   it 'can remove a point-type boost to a stat' do
-    @character.boost :power, by: 10.points, called: :test_boost
+    @character.boost :power, by: 10.points, set_by: self
 
     expect(@character.base_power).to eq 10
     expect(@character.power).to eq 20
 
-    @character.remove_boost from: :power, called: :test_boost
+    @character.remove_boost from: :power, set_by: self
 
     expect(@character.base_power).to eq 10
     expect(@character.power).to eq 10
@@ -33,19 +32,19 @@ describe Character do
     expect(@character.base_power).to eq 10
     expect(@character.power).to eq 10
 
-    @character.boost :power, by: 30.percent, called: :test_boost
+    @character.boost :power, by: 30.percent, set_by: self
 
     expect(@character.base_power).to eq 10
     expect(@character.power).to eq 13
   end
 
   it 'can remove a percent-type boost to a stat' do
-    @character.boost :power, by: 10.percent, called: :test_boost
+    @character.boost :power, by: 10.percent, set_by: self
 
     expect(@character.base_power).to eq 10
     expect(@character.power).to eq 11
 
-    @character.remove_boost from: :power, called: :test_boost
+    @character.remove_boost from: :power, set_by: self
 
     expect(@character.base_power).to eq 10
     expect(@character.power).to eq 10
