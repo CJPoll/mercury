@@ -4,11 +4,11 @@ end
 module Mercury::Actor
 end
 
-module Mercury::Actor
-end
-
-module Mercury::Weapons
+module Mercury::Events
 end
 
 module Mercury::Items
+end
+
+module Mercury::Weapons
 end
